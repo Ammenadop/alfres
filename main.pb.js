@@ -241,24 +241,49 @@ routerAdd("POST", "/api/getCount", async (c) => {
       new DynamicModel({
         id: "",
         total: "",
-        percent:""
+        percent: "",
       })
     );
-    let earned=0;
+    let earned = 0;
     $app
       .dao()
       .db()
-      .select("id","total","percent")
+      .select("id", "total", "percent")
       .from("Booking")
       .where($dbx.exp("bookedBy = {:id}", { id: id }))
       .all(result);
-    for(let i=0;i<result.length;i++){
-      earned = earned + ((result[i].percent * parseFloat(result[i].total)))/100;
+    for (let i = 0; i < result.length; i++) {
+      earned = earned + (result[i].percent * parseFloat(result[i].total)) / 100;
+    }
+
+    const result1 = arrayOf(
+      new DynamicModel({
+        name: "",
+        phone: "",
+        email: "",
+        total: "",
+        date: "",
+        status: "",
+      })
+    );
+    let withdraw = 0;
+    $app
+      .dao()
+      .db()
+      .select("name", "phone", "email", "total", "date", "status")
+      .from("Booking")
+      .where($dbx.exp("cid = {:id}", { id: id }))
+      .all(result1);
+    for (let i = 0; i < result1.length; i++) {
+      withdraw =
+        withdraw + (result[i].percent * parseFloat(result1[i].total)) / 100;
     }
     return c.json(200, {
       message: {
         total: result.length,
         earned: earned,
+        array : result1,
+        withdraw : withdraw,
       },
     });
   } catch (e) {
