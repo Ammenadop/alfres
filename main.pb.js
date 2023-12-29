@@ -271,7 +271,7 @@ routerAdd("POST", "/api/getCount", async (c) => {
       .dao()
       .db()
       .select("name", "phone", "email", "total", "date", "status")
-      .from("Booking")
+      .from("withdraw")
       .where($dbx.exp("cid = {:id}", { id: id }))
       .all(result1);
     for (let i = 0; i < result1.length; i++) {
