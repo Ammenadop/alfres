@@ -275,7 +275,7 @@ routerAdd("POST", "/api/getCount", async (c) => {
       .where($dbx.exp("cid = {:id}", { id: id }))
       .all(result1);
     for (let i = 0; i < result1.length; i++) {
-      withdraw = withdraw + result1[i].total;
+      withdraw = withdraw + parseFloat(result1[i].total);
     }
     return c.json(200, {
       message: {
