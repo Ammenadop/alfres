@@ -271,19 +271,18 @@ routerAdd("POST", "/api/getCount", async (c) => {
       .dao()
       .db()
       .select("name", "phone", "email", "total", "date", "status")
-      .from("withdraw")
+      .from("withdrawal")
       .where($dbx.exp("cid = {:id}", { id: id }))
       .all(result1);
     for (let i = 0; i < result1.length; i++) {
-      withdraw =
-        withdraw + (result[i].percent * parseFloat(result1[i].total)) / 100;
+      withdraw = withdraw + result1[i].total;
     }
     return c.json(200, {
       message: {
         total: result.length,
         earned: earned,
-        array : result1,
-        withdraw : withdraw,
+        array: result1,
+        withdraw: withdraw,
       },
     });
   } catch (e) {
